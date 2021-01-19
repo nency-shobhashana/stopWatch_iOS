@@ -28,23 +28,26 @@ class ViewController: UIViewController, UITableViewDataSource {
     
     @IBOutlet weak var startButton: UIButton!
     @IBOutlet weak var stopButton: UIButton!
+    @IBOutlet weak var resetButton: UIButton!
+    @IBOutlet weak var lapButton: UIButton!
     @IBOutlet weak var lapTable: UITableView!
     @IBOutlet weak var timeLabel: UILabel!
     
     
     @IBAction func startBtn(_ sender: UIButton) {
         timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(keepTimer), userInfo: nil, repeats: true)
-        (minutes, seconds, miliseconds) = (0, 0, 0)
-        laps = []
-        lapTable.reloadData()
         stopButton.isHidden = false
         startButton.isHidden = true
+        lapButton.isHidden = false
+        resetButton.isHidden = true
     }
     
     @IBAction func stopBtn(_ sender: UIButton) {
         timer.invalidate()
         stopButton.isHidden = true
         startButton.isHidden = false
+        lapButton.isHidden = true
+        resetButton.isHidden = false
     }
     
     @IBAction func lapBtn(_ sender: Any) {
@@ -55,6 +58,18 @@ class ViewController: UIViewController, UITableViewDataSource {
         }
         lapTable.reloadData()
     }
+    
+    @IBAction func resetBtn(_ sender: Any) {
+        (minutes, seconds, miliseconds) = (0, 0, 0)
+        timeLabel.text = "\(minutes) : \(seconds).\(miliseconds)"
+        laps = []
+        lapTable.reloadData()
+        stopButton.isHidden = true
+        startButton.isHidden = false
+        lapButton.isHidden = false
+        resetButton.isHidden = true
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         lapTable.dataSource = self
